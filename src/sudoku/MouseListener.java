@@ -22,12 +22,13 @@ public class MouseListener implements java.awt.event.MouseListener {
 
     @Override
     public void mouseClicked(MouseEvent e) {
-        pointClicked.x = e.getX() + X_OFFSET;
-        pointClicked.y = e.getY() + Y_OFFSET;
+
     }
 
     @Override
     public void mousePressed(MouseEvent e) {
+        pointClicked.x = e.getX() + X_OFFSET;
+        pointClicked.y = e.getY() + Y_OFFSET;
     }
 
     @Override
@@ -42,4 +43,5 @@ public class MouseListener implements java.awt.event.MouseListener {
     @Override
     public void mouseExited(MouseEvent e) {
     }
+
 }

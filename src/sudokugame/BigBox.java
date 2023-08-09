@@ -25,7 +25,7 @@ public class BigBox
      */
     public void select() {
         for (Square square : squares) {
-            square.select();
+            square.highlight(SelectionLevel.BACKGROUND);
         }
     }
 
@@ -34,7 +34,7 @@ public class BigBox
      */
     public void deselect() {
         for (Square square : squares) {
-            square.deselect();
+            square.highlight(SelectionLevel.UNSELECTED);
         }
     }
     

@@ -151,7 +151,7 @@ public class SudokuGame
      */
     public void deselectAll() {
         for (int i = 0; i < squares.length; i++) {
-            squares[i].deselect();
+            squares[i].highlight(SelectionLevel.UNSELECTED);
         }
     }
     

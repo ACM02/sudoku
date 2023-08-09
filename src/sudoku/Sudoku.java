@@ -11,6 +11,7 @@ import java.awt.event.ActionListener;
 import javax.swing.JFrame;
 import javax.swing.Timer;
 import sudokugame.SudokuGame;
+import sudokugame.SelectionLevel;
 import sudokugame.Square;
 
 /** 
@@ -69,6 +70,11 @@ public class Sudoku implements ActionListener{
         // timer for the game loop with 20 millisec delay (50 fps)
         Timer timer = new Timer(20, game);
         timer.start();
+        
+        
+        new SudokuSolver(null);
+        
+        
     }
 
   /**
@@ -152,11 +158,6 @@ public class Sudoku implements ActionListener{
                 if (sudokuGame.squares[i].contains(mouseListener.mousePosition)) {
                     sudokuGame.deselectAll();
                     selectedSquare = sudokuGame.squares[i];
-                    for (int j = 0; j < sudokuGame.squares.length; j++) {
-                        if (sudokuGame.squares[j].value == selectedSquare.value && selectedSquare.value != 0) {
-                            sudokuGame.squares[j].select();
-                        }
-                    }
                     selectedSquare.selectAll();
                     i = sudokuGame.squares.length; // Found selected square, leave loop
                 }
@@ -165,6 +166,22 @@ public class Sudoku implements ActionListener{
     		selectedSquare = null;
     		sudokuGame.deselectAll();
     	}
+    	if (selectedNumber > 0 && (selectedSquare == null || selectedSquare.value == 0)) {
+        	for (int i = 0; i < sudokuGame.squares.length; i++) {
+    			if (sudokuGame.squares[i].value == selectedNumber) {
+    				sudokuGame.squares[i].highlight(SelectionLevel.BACKGROUND);
+    			}
+    		}
+    	}
+    	if (selectedSquare != null) {
+        	for (int j = 0; j < sudokuGame.squares.length; j++) {
+                if (sudokuGame.squares[j].value == selectedSquare.value && selectedSquare.value != 0) {
+                    sudokuGame.squares[j].highlight(SelectionLevel.FOREGROUND);
+                }
+            }
+    	}
+
+
 
         // Number placement
         for (int i = 0; i < sudokuGame.squares.length; i++) {

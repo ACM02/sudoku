@@ -25,6 +25,7 @@ public class Square
     public BigBox box;
     public BigCollumn collumn;
     public BigRow row;
+    public boolean isMutable = true;
     
     // Colours of this square
     private Color backgroundColor = null;
@@ -81,21 +82,17 @@ public class Square
         row.select();
         collumn.select();
         box.select();
-        backgroundColor = Color.GRAY;
+        highlight(SelectionLevel.FOREGROUND);
     }
     
     public void deselectAll() {
         row.deselect();
         collumn.deselect();
         box.deselect();
-        backgroundColor = null;
+        highlight(SelectionLevel.UNSELECTED);
     }
     
-    public void select() {
-        backgroundColor = Color.LIGHT_GRAY;
-    }
-    
-    public void deselect() {
-        backgroundColor = null;
+    public void highlight(SelectionLevel level) {
+        backgroundColor = level.color;
     }
 }
