@@ -24,8 +24,8 @@ public class Sudoku implements ActionListener{
 
     public static Sudoku game;
     public Panel panel;
-    public static final int SCREEN_HEIGHT = 600;
-    public static final int SCREEN_WIDTH = 800;
+    public static final int SCREEN_HEIGHT = 400;
+    public static final int SCREEN_WIDTH = 500;
     
     public SudokuGame sudokuGame;
     public MouseListener mouseListener;
@@ -72,8 +72,9 @@ public class Sudoku implements ActionListener{
         timer.start();
         
         
-        new SudokuSolver(null);
-        
+        //new SudokuSolver(game.sudokuGame);
+        SudokuGenerator gen = new SudokuGenerator();
+        gen.generatePuzzle(Difficulty.IMPOSSIBLE);
         
     }
 
@@ -129,7 +130,7 @@ public class Sudoku implements ActionListener{
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         mouseListener = new MouseListener();
         frame.addMouseListener(mouseListener);
-        frame.setResizable(false); // we don't want people to resize our game's screen
+        frame.setResizable(true); // we don't want people to resize our game's screen
         frame.setVisible(true);
         frame.pack(); // update the frame to fit the panel
 

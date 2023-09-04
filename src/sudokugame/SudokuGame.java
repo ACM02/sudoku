@@ -3,6 +3,7 @@ package sudokugame;
 
 import java.awt.Graphics;
 import java.awt.Point;
+import java.util.ArrayList;
 
  
 /**
@@ -27,6 +28,8 @@ public class SudokuGame
     public BigCollumn[] collumns;
     // all 3x3 boxes in the game
     public BigBox[] boxes;
+    
+    public ArrayList<int[]> solutions = new ArrayList<int[]>();
     
     /**
      * This gets kind of complicated but it initializes all the arrays required, 
@@ -162,10 +165,21 @@ public class SudokuGame
     }
     
     public boolean contains(Point p) {
+    	if (p==null) return false;
         if (p.x > xPos && p.x < xPos + width &&
             p.y > yPos && p.y < yPos + height){
             return true;
         }
         return false;
     }
+    
+    public void output() {
+		for (int i = 0; i < 9; i++) {
+			for (int j = 0; j < 9; j++) {
+				System.out.print(this.squares[i*9 + j].value);
+			}
+			System.out.println();
+		}
+    }
+    
 }
