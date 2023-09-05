@@ -128,6 +128,7 @@ public class SudokuGame
             collumnCounters[squares[i].collumn.collumnNumber]++;
         }
     }
+    
     /**
      * Draws the game onto the screen
      * @param g The graphics object doing the drawing
@@ -196,18 +197,9 @@ public class SudokuGame
     public boolean hasErrors() {
         for (int i = 0; i < boxes.length; i++) {
             for (int j = 1; j < 10; j++) {
-                int numFound = boxes[i].contains(j);
-                if (numFound >= 2) {
-                	return true;
-                }
-                numFound = rows[i].contains(j);
-                if (numFound >= 2) {
-                	return true;
-                }
-                numFound = collumns[i].contains(j);
-                if (numFound >= 2) {
-                	return true;
-                }
+            	if (boxes[i].contains(j) >= 2) return true;
+            	if (rows[i].contains(j) >= 2) return true;
+            	if (collumns[i].contains(j) >= 2) return true;
             }
         }
         return false;
