@@ -48,7 +48,7 @@ public class BigBox
         else if (value > 9) return -1;
         int counter = 0;
         for (int i = 0; i < squares.length; i++) {
-            if (squares[i].value == value) {
+            if (squares[i].getValue() == value) {
                 counter++;
             }
         }

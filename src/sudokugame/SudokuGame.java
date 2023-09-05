@@ -1,6 +1,7 @@
 /** required package class namespace */
 package sudokugame;
 
+import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Point;
 import java.util.ArrayList;
@@ -132,6 +133,7 @@ public class SudokuGame
      * @param g The graphics object doing the drawing
      */
     public void draw(Graphics g) {
+    	g.setColor(Color.BLACK);
         // Draw all the squares
         for (int i = 0; i < squares.length; i++) {
             squares[i].draw(g);
@@ -160,7 +162,10 @@ public class SudokuGame
     
     public void loadPuzzle(int[] puzzle) {
         for (int i = 0; i < squares.length; i++) {
-            squares[i].value = puzzle[i];
+        	squares[i].isMutable=true;
+            squares[i].setValue(puzzle[i]);
+            if (squares[i].getValue() != 0) squares[i].isMutable = false;
+            else squares[i].isMutable = true;
         }
     }
     
@@ -176,10 +181,44 @@ public class SudokuGame
     public void output() {
 		for (int i = 0; i < 9; i++) {
 			for (int j = 0; j < 9; j++) {
-				System.out.print(this.squares[i*9 + j].value);
+				System.out.print(this.squares[i*9 + j].getValue());
 			}
 			System.out.println();
 		}
+    }
+    
+    public void clearMutableSquares() {
+    	for (int i = 0; i < squares.length; i++) {
+			if (squares[i].isMutable) squares[i].setValue(0);
+		}
+    }
+    
+    public boolean hasErrors() {
+        for (int i = 0; i < boxes.length; i++) {
+            for (int j = 1; j < 10; j++) {
+                int numFound = boxes[i].contains(j);
+                if (numFound >= 2) {
+                	return true;
+                }
+                numFound = rows[i].contains(j);
+                if (numFound >= 2) {
+                	return true;
+                }
+                numFound = collumns[i].contains(j);
+                if (numFound >= 2) {
+                	return true;
+                }
+            }
+        }
+        return false;
+    }
+    
+    public boolean hasErrorAt(int index) {
+		Square toCheck = squares[index];
+        if (toCheck.box.contains(toCheck.getValue()) > 1) return true;
+        if (toCheck.row.contains(toCheck.getValue()) > 1) return true;
+        if (toCheck.collumn.contains(toCheck.getValue()) > 1) return true;
+		return false;
     }
     
 }

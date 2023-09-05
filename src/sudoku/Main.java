@@ -20,9 +20,9 @@ import sudokugame.Square;
  * @author A. McLoed
  * @since Jul. 24, 2021 
  */
-public class Sudoku implements ActionListener{
+public class Main implements ActionListener{
 
-    public static Sudoku game;
+    public static Main game;
     public Panel panel;
     public static final int SCREEN_HEIGHT = 400;
     public static final int SCREEN_WIDTH = 500;
@@ -34,24 +34,28 @@ public class Sudoku implements ActionListener{
     public int selectedNumber = 0;
     public Square selectedSquare;
     
+    public static final Color SUDOKU_BLUE = new Color(14,41,115);
+    
     /**
      * Initializes the frame and everything else
      */
-    public Sudoku() {
+    public Main() {
         sudokuGame = new SudokuGame();
         numberButtons = new Button[9];
         eraser = new Button(
                 (int) (Square.WIDTH * 3 + sudokuGame.xPos),
                 Square.HEIGHT * 10 + sudokuGame.yPos,
-                Square.WIDTH * 2,
+                Square.WIDTH * 3,
                 Square.HEIGHT);
         eraser.text = "Erase";
+        eraser.textColor = SUDOKU_BLUE;
         for (int i = 0; i < numberButtons.length; i++) {
             numberButtons[i] = new Button(
             Square.WIDTH * i + sudokuGame.xPos,
             Square.HEIGHT * 9 + sudokuGame.yPos + 2,
             Square.WIDTH,
             Square.HEIGHT);
+            numberButtons[i].textColor = SUDOKU_BLUE;
             numberButtons[i].text = "" + (i + 1);
         }
         selectedSquare = sudokuGame.squares[0];
@@ -65,7 +69,7 @@ public class Sudoku implements ActionListener{
     public static void main(String[] args) {
         
         // create the game instance
-        game = new Sudoku();
+        game = new Main();
 
         // timer for the game loop with 20 millisec delay (50 fps)
         Timer timer = new Timer(20, game);
@@ -167,16 +171,16 @@ public class Sudoku implements ActionListener{
     		selectedSquare = null;
     		sudokuGame.deselectAll();
     	}
-    	if (selectedNumber > 0 && (selectedSquare == null || selectedSquare.value == 0)) {
+    	if (selectedNumber > 0 && (selectedSquare == null || selectedSquare.getValue() == 0)) {
         	for (int i = 0; i < sudokuGame.squares.length; i++) {
-    			if (sudokuGame.squares[i].value == selectedNumber) {
+    			if (sudokuGame.squares[i].getValue() == selectedNumber) {
     				sudokuGame.squares[i].highlight(SelectionLevel.BACKGROUND);
     			}
     		}
     	}
     	if (selectedSquare != null) {
         	for (int j = 0; j < sudokuGame.squares.length; j++) {
-                if (sudokuGame.squares[j].value == selectedSquare.value && selectedSquare.value != 0) {
+                if (sudokuGame.squares[j].getValue() == selectedSquare.getValue() && selectedSquare.getValue() != 0) {
                     sudokuGame.squares[j].highlight(SelectionLevel.FOREGROUND);
                 }
             }
@@ -187,7 +191,7 @@ public class Sudoku implements ActionListener{
         // Number placement
         for (int i = 0; i < sudokuGame.squares.length; i++) {
 			if (sudokuGame.squares[i].contains(mouseListener.pointClicked)) {
-				selectedSquare.value = selectedNumber;
+				selectedSquare.setValue(selectedNumber);
 			}
 		}
         
@@ -221,31 +225,31 @@ public class Sudoku implements ActionListener{
      */
     private void hightlightErrors() {
         for (int i = 0; i < sudokuGame.squares.length; i++) {
-            sudokuGame.squares[i].textColor = Color.BLACK;
+            sudokuGame.squares[i].isError = false;
         }
         for (int i = 0; i < sudokuGame.boxes.length; i++) {
             for (int j = 1; j < 10; j++) {
                 int numFound = sudokuGame.boxes[i].contains(j);
                 if (numFound >= 2) {
                     for (int k = 0; k < 9; k++) {
-                        if (sudokuGame.boxes[i].squares[k].value == j) {
-                            sudokuGame.boxes[i].squares[k].textColor = Color.RED;
+                        if (sudokuGame.boxes[i].squares[k].getValue() == j) {
+                            sudokuGame.boxes[i].squares[k].isError = true;
                         }
                     }
                 }
                 numFound = sudokuGame.rows[i].contains(j);
                 if (numFound >= 2) {
                     for (int k = 0; k < 9; k++) {
-                        if (sudokuGame.rows[i].squares[k].value == j) {
-                            sudokuGame.rows[i].squares[k].textColor = Color.RED;
+                        if (sudokuGame.rows[i].squares[k].getValue() == j) {
+                            sudokuGame.rows[i].squares[k].isError = true;
                         }
                     }
                 }
                 numFound = sudokuGame.collumns[i].contains(j);
                 if (numFound >= 2) {
                     for (int k = 0; k < 9; k++) {
-                        if (sudokuGame.collumns[i].squares[k].value == j) {
-                            sudokuGame.collumns[i].squares[k].textColor = Color.RED;
+                        if (sudokuGame.collumns[i].squares[k].getValue() == j) {
+                            sudokuGame.collumns[i].squares[k].isError = true;
                         }
                     }
                 }

@@ -17,8 +17,8 @@ public class Panel extends JPanel {
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
-        if (Sudoku.game != null){
-            Sudoku.game.draw(g);
+        if (Main.game != null){
+            Main.game.draw(g);
         }
         
     }

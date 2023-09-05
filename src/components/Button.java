@@ -16,6 +16,7 @@ public class Button extends Component {
 
     public Color backgroundColor;
     public Color borderColor;
+    public Color textColor;
     public ImageIcon icon;
     public JLabel iconLabel;
     public String text;
@@ -43,8 +44,10 @@ public class Button extends Component {
                 g.drawRect(hitbox.x, hitbox.y, hitbox.width, hitbox.height);
             }
             if (!text.equals("")) {
-                g.setColor(Color.BLACK);
-                g.drawString(text, hitbox.x + (int) (hitbox.width * 0.33), hitbox.y + (int) (hitbox.height * 0.75));
+            	int textWidth = g.getFontMetrics().stringWidth(text);
+            	int textHeight = g.getFontMetrics().getHeight();
+                g.setColor(textColor);
+                g.drawString(text, hitbox.x + (int) (hitbox.width * 0.55 - textWidth*0.5), hitbox.y + (int) (hitbox.height * 0.5 + textHeight*.30));
             }
         }
         else {
