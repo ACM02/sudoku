@@ -4,6 +4,7 @@ package sudoku;
 import java.util.ArrayList;
 import java.util.Random;
 
+import sudokugame.Difficulty;
 import sudokugame.SudokuGame;
 
 /**
@@ -26,7 +27,7 @@ public class SudokuGenerator
     
     public SudokuGame generatePuzzle(Difficulty difficulty) {
     	generated = new SudokuGame();
-    	Main.game.sudokuGame = generated;
+    	Main.sudokuGame = generated;
     	// Phase 1, fill in a valid puzzle
     	do {
         	fillPuzzle(0);

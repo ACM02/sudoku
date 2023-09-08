@@ -11,6 +11,7 @@ import java.awt.event.ActionListener;
 import javax.swing.JFrame;
 import javax.swing.Timer;
 import sudokugame.SudokuGame;
+import sudokugame.Difficulty;
 import sudokugame.SelectionLevel;
 import sudokugame.Square;
 
@@ -20,17 +21,17 @@ import sudokugame.Square;
  * @author A. McLoed
  * @since Jul. 24, 2021 
  */
-public class Main implements ActionListener{
+public class Main implements ActionListener {
 
     public static Main game;
     public Panel panel;
-    public static final int SCREEN_HEIGHT = 400;
-    public static final int SCREEN_WIDTH = 500;
+    public static int SCREEN_HEIGHT = 400;
+    public static int SCREEN_WIDTH = 500;
     
-    public SudokuGame sudokuGame;
+    public static SudokuGame sudokuGame;
     public MouseListener mouseListener;
-    public Button[] numberButtons;
-    public Button eraser;
+    public static Button[] numberButtons;
+    public static Button eraser;
     public int selectedNumber = 0;
     public Square selectedSquare;
     
@@ -109,6 +110,8 @@ public class Main implements ActionListener{
      * @param g Graphics object that does the drawing
      */
     public void draw(Graphics g) {
+    	//g.drawLine(SCREEN_WIDTH/2, 0, SCREEN_WIDTH/2, SCREEN_HEIGHT);
+    	//g.drawLine(0, SCREEN_HEIGHT/2, SCREEN_WIDTH, SCREEN_HEIGHT/2);
         sudokuGame.draw(g);
         for (Button numberButton : numberButtons) {
             numberButton.draw(g);
@@ -257,4 +260,29 @@ public class Main implements ActionListener{
         }
     }
 
+    public static void resize(int width, int height) {
+    	int smaller;
+    	if (width < height) smaller = width;
+    	else smaller = height;
+    	SCREEN_WIDTH = width;
+    	SCREEN_HEIGHT = height;
+    	Square.HEIGHT = (int) (smaller * 0.07);
+    	Square.WIDTH = Square.HEIGHT;
+    	sudokuGame.resize();
+    	
+
+        eraser.hitbox.x = (int) (Square.WIDTH * 3 + sudokuGame.xPos);
+        eraser.hitbox.y = Square.HEIGHT * 10 + sudokuGame.yPos;
+        eraser.hitbox.width = Square.WIDTH*3;
+        eraser.hitbox.height = Square.HEIGHT;
+        
+        for (int i = 0; i < numberButtons.length; i++) {
+            numberButtons[i].hitbox.x =  Square.WIDTH * i + sudokuGame.xPos;
+            numberButtons[i].hitbox.y = Square.HEIGHT * 9 + sudokuGame.yPos + 2;
+            numberButtons[i].hitbox.width = Square.WIDTH;
+            numberButtons[i].hitbox.height = Square.HEIGHT;
+            
+        }
+    	
+    }
 }

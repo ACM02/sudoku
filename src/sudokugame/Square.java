@@ -18,8 +18,8 @@ import sudoku.Main;
  */
 public class Square 
 {
-    public static final int WIDTH = 20;
-    public static final int HEIGHT = 20;
+    public static int WIDTH = 30;
+    public static int HEIGHT = 30;
     // The value in this square
     private int value = 0;
     public Rectangle hitbox;
@@ -45,6 +45,8 @@ public class Square
         hitbox.height = HEIGHT;
     }
     
+    
+    
     /**
      * Sets the position of this square
      * @param xPos x position to set the square to
@@ -68,7 +70,7 @@ public class Square
      * @param g the Graphics object doing the drawing
      */
     public void draw(Graphics g) {
-    	g.setFont(new Font("default", Font.BOLD, 16));
+    	g.setFont(new Font("default", Font.BOLD,(int) (HEIGHT*.8)));
         if (backgroundColor != null) {
             g.setColor(backgroundColor);
             g.fillRect(hitbox.x, hitbox.y, WIDTH, HEIGHT);

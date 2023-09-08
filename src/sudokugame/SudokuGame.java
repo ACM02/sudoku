@@ -6,6 +6,8 @@ import java.awt.Graphics;
 import java.awt.Point;
 import java.util.ArrayList;
 
+import sudoku.Main;
+
  
 /**
  * SudokuGame.java - description
@@ -15,10 +17,13 @@ import java.util.ArrayList;
  */
 public class SudokuGame 
 {
-    public int xPos = 50;
-    public int yPos = 50;
+
+	public static final double X_PLACEMENT = 0.33;
+	public static final double Y_PLACEMENT = 0.4;
     public int width = Square.WIDTH*9;
     public int height = Square.HEIGHT*9;
+    public int xPos = (int) ((Main.SCREEN_WIDTH*X_PLACEMENT)-(width/2));
+    public int yPos =  (int) ((Main.SCREEN_HEIGHT*Y_PLACEMENT)-(height/2));
     
     // all squares in the game
     public Square[] squares;
@@ -149,6 +154,26 @@ public class SudokuGame
                     g.drawLine(xPos, Square.HEIGHT * j - 1 + yPos, Square.WIDTH * 9 + xPos, Square.HEIGHT * j - 1 + yPos);
                 }
             }
+        }
+    }
+    
+    public void resize() {
+        width = Square.WIDTH*9;
+        height = Square.HEIGHT*9;
+        xPos = (int) ((Main.SCREEN_WIDTH*X_PLACEMENT)-(width/2));
+        yPos =  (int) ((Main.SCREEN_HEIGHT*Y_PLACEMENT)-(height/2));
+        int xCounter = 0;
+        int yCounter = 0;
+        for (int i = 0; i < squares.length; i++) {
+        	squares[i].setPosition(xCounter * Square.WIDTH + xPos, yCounter * Square.HEIGHT + yPos);
+            // increase the position in the row each time through
+            if (xCounter < 8)
+                xCounter++;
+            else { // if xCounter hits it's limit go down a row and back to the start
+                xCounter = 0;
+                yCounter++;
+            }
+        	
         }
     }
     
