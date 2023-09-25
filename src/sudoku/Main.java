@@ -32,8 +32,9 @@ public class Main implements ActionListener {
     public MouseListener mouseListener;
     public static Button[] numberButtons;
     public static Button eraser;
-    public int selectedNumber = 0;
-    public Square selectedSquare;
+    public static Button newGame;
+    public static int selectedNumber = 0;
+    public static Square selectedSquare;
     
     public static final Color SUDOKU_BLUE = new Color(14,41,115);
     
@@ -42,6 +43,18 @@ public class Main implements ActionListener {
      */
     public Main() {
         sudokuGame = new SudokuGame();
+        initButtons();
+        newGame = new Button(sudokuGame.xPos + Square.WIDTH*10, sudokuGame.yPos, Square.WIDTH*5, Square.HEIGHT);
+        newGame.borderColor = Color.BLACK;
+        newGame.text = "New game!";
+        //newGame.backgroundColor = Color.BLACK;
+        initFrame(new JFrame());
+    }
+    
+    /**
+     * Initializes the number and eraser buttons below the game
+     */
+    private static void initButtons() {
         numberButtons = new Button[9];
         eraser = new Button(
                 (int) (Square.WIDTH * 3 + sudokuGame.xPos),
@@ -60,11 +73,9 @@ public class Main implements ActionListener {
             numberButtons[i].text = "" + (i + 1);
         }
         selectedSquare = sudokuGame.squares[0];
-        //numberButtons[0].borderColor = Color.LIGHT_GRAY;
-        
-        initFrame(new JFrame());
-    }
-    /**
+	}
+    
+	/**
      * @param args the command line arguments
      */
     public static void main(String[] args) {
@@ -83,7 +94,7 @@ public class Main implements ActionListener {
         
     }
 
-  /**
+    /**
      * The game loop: where everything inside the game updates.
      *
      * @param e
@@ -117,6 +128,7 @@ public class Main implements ActionListener {
             numberButton.draw(g);
         }
         eraser.draw(g);
+        newGame.draw(g);
     }
 
     /**
@@ -160,36 +172,7 @@ public class Main implements ActionListener {
      * Handles the selection of squares and placing values in them
      */
     private void handleSquares() {
-    	// Highlight Squares
-    	if (sudokuGame.contains(mouseListener.mousePosition)) {
-            for (int i = 0; i < sudokuGame.squares.length; i++) {
-                if (sudokuGame.squares[i].contains(mouseListener.mousePosition)) {
-                    sudokuGame.deselectAll();
-                    selectedSquare = sudokuGame.squares[i];
-                    selectedSquare.selectAll();
-                    i = sudokuGame.squares.length; // Found selected square, leave loop
-                }
-            }
-    	} else {
-    		selectedSquare = null;
-    		sudokuGame.deselectAll();
-    	}
-    	if (selectedNumber > 0 && (selectedSquare == null || selectedSquare.getValue() == 0)) {
-        	for (int i = 0; i < sudokuGame.squares.length; i++) {
-    			if (sudokuGame.squares[i].getValue() == selectedNumber) {
-    				sudokuGame.squares[i].highlight(SelectionLevel.BACKGROUND);
-    			}
-    		}
-    	}
-    	if (selectedSquare != null) {
-        	for (int j = 0; j < sudokuGame.squares.length; j++) {
-                if (sudokuGame.squares[j].getValue() == selectedSquare.getValue() && selectedSquare.getValue() != 0) {
-                    sudokuGame.squares[j].highlight(SelectionLevel.FOREGROUND);
-                }
-            }
-    	}
-
-
+    	highlightSquares();
 
         // Number placement
         for (int i = 0; i < sudokuGame.squares.length; i++) {
@@ -198,7 +181,10 @@ public class Main implements ActionListener {
 			}
 		}
         
-        
+        handleButtons();
+    }
+
+    private void handleButtons() {
         // Number selection
         if (eraser.contains(mouseListener.pointClicked)) {
             selectedNumber = 0;
@@ -221,9 +207,50 @@ public class Main implements ActionListener {
                 i = numberButtons.length; // Exit loop, done
             }
         }
-    }
+		
+        if (newGame.contains(mouseListener.pointClicked)) {
+            SudokuGenerator gen = new SudokuGenerator();
+            gen.generatePuzzle(Difficulty.IMPOSSIBLE);
+        }
+	}
 
-    /**
+	/**
+     * Sets the selected square based on mouse position and highlights the appropriate squares.
+     * If no square is selected, highlights based on the selected number.
+     */
+    private void highlightSquares() {
+    	if (sudokuGame.contains(mouseListener.mousePosition)) {
+            for (int i = 0; i < sudokuGame.squares.length; i++) {
+                if (sudokuGame.squares[i].contains(mouseListener.mousePosition)) {
+                    sudokuGame.deselectAll();
+                    selectedSquare = sudokuGame.squares[i];
+                    selectedSquare.selectAll();
+                    i = sudokuGame.squares.length; // Found selected square, leave loop
+                }
+            }
+    	} else {
+    		selectedSquare = null;
+    		sudokuGame.deselectAll();
+    	}
+    	
+    	if (selectedNumber > 0 && (selectedSquare == null || selectedSquare.getValue() == 0)) {
+        	for (int i = 0; i < sudokuGame.squares.length; i++) {
+    			if (sudokuGame.squares[i].getValue() == selectedNumber) {
+    				sudokuGame.squares[i].highlight(SelectionLevel.BACKGROUND);
+    			}
+    		}
+    	}
+    	if (selectedSquare != null) {
+        	for (int j = 0; j < sudokuGame.squares.length; j++) {
+                if (sudokuGame.squares[j].getValue() == selectedSquare.getValue() && selectedSquare.getValue() != 0) {
+                    sudokuGame.squares[j].highlight(SelectionLevel.FOREGROUND);
+                }
+            }
+    	}
+		
+	}
+
+	/**
      * Highlights all squares that are errors in red
      */
     private void hightlightErrors() {
@@ -260,6 +287,11 @@ public class Main implements ActionListener {
         }
     }
 
+    /**
+     * Resizes components on the game frame to a new size based off of a new frame dimension
+     * @param width Width of the frame
+     * @param height Height of the frame
+     */
     public static void resize(int width, int height) {
     	int smaller;
     	if (width < height) smaller = width;
@@ -271,18 +303,23 @@ public class Main implements ActionListener {
     	sudokuGame.resize();
     	
 
-        eraser.hitbox.x = (int) (Square.WIDTH * 3 + sudokuGame.xPos);
-        eraser.hitbox.y = Square.HEIGHT * 10 + sudokuGame.yPos;
-        eraser.hitbox.width = Square.WIDTH*3;
-        eraser.hitbox.height = Square.HEIGHT;
+        eraser.setX((int) (Square.WIDTH * 3 + sudokuGame.xPos));
+        eraser.setY(Square.HEIGHT * 10 + sudokuGame.yPos);
+        eraser.setWidth(Square.WIDTH*3);
+        eraser.setHeight(Square.HEIGHT);
         
         for (int i = 0; i < numberButtons.length; i++) {
-            numberButtons[i].hitbox.x =  Square.WIDTH * i + sudokuGame.xPos;
-            numberButtons[i].hitbox.y = Square.HEIGHT * 9 + sudokuGame.yPos + 2;
-            numberButtons[i].hitbox.width = Square.WIDTH;
-            numberButtons[i].hitbox.height = Square.HEIGHT;
+            numberButtons[i].setX(Square.WIDTH * i + sudokuGame.xPos);
+            numberButtons[i].setY(Square.HEIGHT * 9 + sudokuGame.yPos + 2);
+            numberButtons[i].setWidth(Square.WIDTH);
+            numberButtons[i].setHeight(Square.HEIGHT);
             
         }
+        
+        newGame.setX(sudokuGame.xPos + Square.WIDTH*10);
+        newGame.setY(sudokuGame.yPos);
+        newGame.setWidth(Square.WIDTH*5);
+        newGame.setHeight(Square.HEIGHT);
     	
     }
 }

@@ -8,7 +8,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 
 /**
- *
+ * Button.java - A button component
  * @since Apr. 8, 2021
  * @author a.mcleod
  */
@@ -33,6 +33,10 @@ public class Button extends Component {
         this.icon = icon;
     }
     
+    /**
+     * Draws this component using a graphics object
+     * @param g Graphics object to draw using
+     */
     public void draw(Graphics g) {
         if (icon == null) {
             if (backgroundColor != null) {
@@ -43,7 +47,7 @@ public class Button extends Component {
                 g.setColor(borderColor);
                 g.drawRect(hitbox.x, hitbox.y, hitbox.width, hitbox.height);
             }
-            if (!text.equals("")) {
+            if (text != null && !text.equals("")) {
             	int textWidth = g.getFontMetrics().stringWidth(text);
             	int textHeight = g.getFontMetrics().getHeight();
                 g.setColor(textColor);
@@ -57,6 +61,11 @@ public class Button extends Component {
         
     }
     
+    /**
+     * Returns if this component contains the point P
+     * @param p The point to check
+     * @return If this component contains P
+     */
     public boolean contains(Point p) {
         if (p.x > hitbox.x && p.x < hitbox.x + hitbox.width &&
             p.y > hitbox.y && p.y < hitbox.y + hitbox.height){

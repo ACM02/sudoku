@@ -31,6 +31,9 @@ public class Panel extends JPanel implements ComponentListener {
         
     }
 
+    /**
+     * Resizes the game components when the frame is resized
+     */
 	@Override
 	public void componentResized(ComponentEvent e) {
 		Main.resize(e.getComponent().getWidth(), e.getComponent().getHeight());
