@@ -56,7 +56,7 @@ public class SudokuGame
             boxes[i] = new BigBox(i);
         }
         
-        // These counters are used to tell each square which box/row/collumn it's
+        // These counters are used to tell each square which box/row/column it's
         // in
         int xCounter = 0;
         int yCounter = 0;
@@ -157,6 +157,9 @@ public class SudokuGame
         }
     }
     
+    /**
+     * Resizes this game to fit a new screen size
+     */
     public void resize() {
         width = Square.WIDTH*9;
         height = Square.HEIGHT*9;
@@ -178,7 +181,7 @@ public class SudokuGame
     }
     
     /**
-     * Simply deselects all the squares 
+     * Deselects all the squares in this game
      */
     public void deselectAll() {
         for (int i = 0; i < squares.length; i++) {
@@ -186,6 +189,10 @@ public class SudokuGame
         }
     }
     
+    /**
+     * Loads a puzzle into this game, setting the appropriate values to be mutable
+     * @param puzzle The puzzle to be loaded, in int[] format, with 0 being an empty cell
+     */
     public void loadPuzzle(int[] puzzle) {
         for (int i = 0; i < squares.length; i++) {
         	squares[i].isMutable=true;
@@ -195,6 +202,11 @@ public class SudokuGame
         }
     }
     
+    /**
+     * Returns if this game contains the point P
+     * @param p The point to check
+     * @return If this game contains P
+     */
     public boolean contains(Point p) {
     	if (p==null) return false;
         if (p.x > xPos && p.x < xPos + width &&
@@ -204,6 +216,9 @@ public class SudokuGame
         return false;
     }
     
+    /**
+     * Outputs the contents of this sudokugame
+     */
     public void output() {
 		for (int i = 0; i < 9; i++) {
 			for (int j = 0; j < 9; j++) {
@@ -213,12 +228,19 @@ public class SudokuGame
 		}
     }
     
+    /**
+     * Sets all mutable squares to 0
+     */
     public void clearMutableSquares() {
     	for (int i = 0; i < squares.length; i++) {
 			if (squares[i].isMutable) squares[i].setValue(0);
 		}
     }
     
+    /**
+     * Gets if this game contains any cells that break the rules of sudoku
+     * @return If this game has any rules broken
+     */
     public boolean hasErrors() {
         for (int i = 0; i < boxes.length; i++) {
             for (int j = 1; j < 10; j++) {
@@ -230,6 +252,11 @@ public class SudokuGame
         return false;
     }
     
+    /**
+     * Checks if a given cell in the game is causing an error
+     * @param index The index to check
+     * @return If the index is causing an error
+     */
     public boolean hasErrorAt(int index) {
 		Square toCheck = squares[index];
         if (toCheck.box.contains(toCheck.getValue()) > 1) return true;

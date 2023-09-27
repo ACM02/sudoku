@@ -27,11 +27,6 @@ public class SudokuSolver {
 		//this.toSolve = game;
 		toSolve = game;
 		game.loadPuzzle(sampleBoard);
-//		for (int i = 0; i < toSolve.squares.length; i++) {
-//			toSolve.squares[i].value = sampleBoard[i];
-//			if (toSolve.squares[i].value != 0) toSolve.squares[i].isMutable = false;
-//		}  Replaced by above line
-		//calculateSolution();
 		solveRecursivelyToTwoSolutions(toSolve, 0);
 		System.out.println("Found " + toSolve.solutions.size() + " solution(s)");
 		if (toSolve.solutions.size() == 0) {

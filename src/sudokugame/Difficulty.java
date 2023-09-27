@@ -4,9 +4,9 @@ public enum Difficulty {
 
 	EASY(20), MEDIUM(30), HARD(40), IMPOSSIBLE(55);
 	
-	public int squaresRemoved;
+	public int squaresToRemove;
 	
-	Difficulty(int squaresRemoved) {
-		this.squaresRemoved = squaresRemoved;
+	Difficulty(int squaresToRemove) {
+		this.squaresToRemove = squaresToRemove;
 	}
 }

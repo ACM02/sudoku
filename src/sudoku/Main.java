@@ -88,9 +88,9 @@ public class Main implements ActionListener {
         timer.start();
         
         
-        //new SudokuSolver(game.sudokuGame);
-        SudokuGenerator gen = new SudokuGenerator();
-        gen.generatePuzzle(Difficulty.IMPOSSIBLE);
+        new SudokuSolver(Main.sudokuGame);
+        //SudokuGenerator gen = new SudokuGenerator();
+        //gen.generatePuzzle(Difficulty.IMPOSSIBLE);
         
     }
 

@@ -1,4 +1,3 @@
-/** required package class namespace */
 package sudoku;
 
 import java.util.ArrayList;
@@ -30,13 +29,10 @@ public class SudokuGenerator
     	Main.sudokuGame = generated;
     	// Phase 1, fill in a valid puzzle
     	do {
-        	fillPuzzle(0);
+        	fillPuzzle(generated);
 		} while (!SudokuSolver.isSolved(generated));
-    	//generated.output();
     	
     	// I SHOULD ADD THE SOLUTION TO SOLUTIONS HERE!! (Since I already have it)
-    	//System.out.println("--------------------------");
-    	
     	
     	// Phase 2, remove values
     	
@@ -46,55 +42,65 @@ public class SudokuGenerator
 		}
     	Random r = new Random();
     	int attempts = 0;
-    	for (int i = 0; i < difficulty.squaresRemoved; i++) {
+    	for (int squaresRemoved = 0; squaresRemoved < difficulty.squaresToRemove; squaresRemoved++) {
 			int index = r.nextInt(81);
 			
-			//System.out.println("Attempting to remove index " + index + " (" + i + "/" + difficulty.squaresRemoved + ")");
 			if (!generated.squares[index].isMutable) {
+				// Track the removed value in case we need to place it back
 				int valueRemoved = generated.squares[index].getValue();
+				// Remove the random index from the puzzle
 				generated.squares[index].isMutable = true;
 				generated.squares[index].setValue(0);;
 				generated.solutions = new ArrayList<>();
 				boolean unique = SudokuSolver.isUnique(generated);
-				//if (generated.solutions.size() == 0) System.out.println("NO SOLUTIONS!!!!");
-				//System.out.println("Found " + generated.solutions.size() + " solution(s)!");
 				if (!unique) {
-					i--;
+					// FAILED, restore original value and try again
+					squaresRemoved--;
 					generated.squares[index].setValue(valueRemoved);
 					generated.squares[index].isMutable = false;
-					//System.out.println("Failed (Attempt: " + attempts + "/" + difficulty.squaresRemoved*2 + ")");
 				} else {
+					// SUCCESS, try next index
 					generated.squares[index].isMutable = true;
-					//System.out.println("Success");
 				}
 				attempts++;
-				if (attempts > difficulty.squaresRemoved*2) {
-					i = Integer.MAX_VALUE;
-					//System.out.println("FAILED, GENERATING NEW PUZZLE");
+				if (attempts > difficulty.squaresToRemove*2) {
+					// Ran out of attempts, generate a new puzzle
+					squaresRemoved = Integer.MAX_VALUE;
 					return generatePuzzle(difficulty);
 				}
 			} else {
-				i--;
+				squaresRemoved--;
 			}
 
 		}
-    	//generated.output();
 		return generated;
     }
      
-    public boolean fillPuzzle(int index) {
-    	//System.out.println("Trying index " + index);
-		if (index == generated.squares.length) return true;
+    /**
+     * Public driver method for the recursive fill puzzle 
+     */
+    public void fillPuzzle(SudokuGame puzzle) {
+    	fillPuzzle(puzzle, 0);
+    }
+    
+    /**
+     * Fills a sudoku puzzle with random entries, while following sudoku rules
+     * @param puzzle The puzzle to fill
+     * @param index The index to fill in the puzzle
+     * @return If filling this index resulted in a valid puzzle
+     */
+    private boolean fillPuzzle(SudokuGame puzzle, int index) {
+		if (index == puzzle.squares.length) return true;
 		Random r = new Random();
 		boolean done = false;
 		for (int i = 0; i < 9; i++) {
-			generated.squares[index].setValue(r.nextInt(9)+1);
-			if (!generated.hasErrorAt(index)) {
-				done = fillPuzzle(index+1);
+			puzzle.squares[index].setValue(r.nextInt(9)+1);
+			if (!puzzle.hasErrorAt(index)) {
+				done = fillPuzzle(puzzle, index+1);
 				if (done) return true;
 			}
 		}
-		generated.squares[index].setValue(0);
+		puzzle.squares[index].setValue(0);
 		
 		return false;
     }

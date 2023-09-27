@@ -1,4 +1,3 @@
-/** required package class namespace */
 package sudokugame;
 
 import java.awt.Color;
@@ -57,12 +56,20 @@ public class Square
         hitbox.y = yPos;
     }
     
+    /**
+     * Gets the value held by this square
+     * @return The value in this square (0-9)
+     */
     public int getValue() {
     	return this.value;
     }
     
+    /**
+     * Sets the value of this square if it is mutable.
+     * @param value The value to set the square to (0-9)
+     */
     public void setValue(int value) {
-    	if (isMutable) this.value = value;
+    	if (isMutable && value >=0 && value <= 9) this.value = value;
     }
     
     /**
@@ -93,6 +100,11 @@ public class Square
         
     }
     
+    /**
+     * Returns if this square contains the point P
+     * @param p The point to check
+     * @return If this square contains P
+     */
     public boolean contains(Point p) {
         if (p.x > hitbox.x && p.x < hitbox.x + WIDTH &&
             p.y > hitbox.y && p.y < hitbox.y + HEIGHT){
@@ -101,6 +113,10 @@ public class Square
         return false;
     }
     
+    /**
+     * Selects all squares associated with this square (Ones in its box, row, and column) 
+     * and selects this square itself
+     */
     public void selectAll() {
         row.select();
         collumn.select();
@@ -108,6 +124,10 @@ public class Square
         highlight(SelectionLevel.FOREGROUND);
     }
     
+    /**
+     * Deselects all squares associated with this square (Ones in its box, row, and column) 
+     * and deselects this square itself
+     */
     public void deselectAll() {
         row.deselect();
         collumn.deselect();
@@ -115,6 +135,10 @@ public class Square
         highlight(SelectionLevel.UNSELECTED);
     }
     
+    /**
+     * Highlights this square to a given level
+     * @param level The level to highlight this square with
+     */
     public void highlight(SelectionLevel level) {
         backgroundColor = level.color;
     }
