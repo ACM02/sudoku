@@ -18,7 +18,7 @@ import sudoku.Main;
 public class SudokuGame 
 {
 
-	public static final double X_PLACEMENT = 0.33;
+	public static final double X_PLACEMENT = 0.30;
 	public static final double Y_PLACEMENT = 0.4;
     public int width = Square.WIDTH*9;
     public int height = Square.HEIGHT*9;

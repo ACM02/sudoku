@@ -32,7 +32,10 @@ public class Main implements ActionListener {
     public MouseListener mouseListener;
     public static Button[] numberButtons;
     public static Button eraser;
-    public static Button newGame;
+    public static Button newGameImpossible;
+    public static Button newGameHard;
+    public static Button newGameMedium;
+    public static Button newGameEasy;
     public static int selectedNumber = 0;
     public static Square selectedSquare;
     
@@ -44,9 +47,7 @@ public class Main implements ActionListener {
     public Main() {
         sudokuGame = new SudokuGame();
         initButtons();
-        newGame = new Button(sudokuGame.xPos + Square.WIDTH*10, sudokuGame.yPos, Square.WIDTH*5, Square.HEIGHT);
-        newGame.borderColor = Color.BLACK;
-        newGame.text = "New game!";
+
         //newGame.backgroundColor = Color.BLACK;
         initFrame(new JFrame());
     }
@@ -73,6 +74,23 @@ public class Main implements ActionListener {
             numberButtons[i].text = "" + (i + 1);
         }
         selectedSquare = sudokuGame.squares[0];
+        
+        
+        newGameImpossible = new Button(sudokuGame.xPos + Square.WIDTH*10, sudokuGame.yPos, Square.WIDTH*6, Square.HEIGHT);
+        newGameImpossible.borderColor = Color.BLACK;
+        newGameImpossible.text = "New game (Impossible)";
+        
+        newGameHard = new Button(sudokuGame.xPos + Square.WIDTH*10, sudokuGame.yPos + Square.HEIGHT, Square.WIDTH*5, Square.HEIGHT);
+        newGameHard.borderColor = Color.BLACK;
+        newGameHard.text = "New game (Hard)";
+        
+        newGameMedium = new Button(sudokuGame.xPos + Square.WIDTH*10, sudokuGame.yPos + Square.HEIGHT*2, Square.WIDTH*5, Square.HEIGHT);
+        newGameMedium.borderColor = Color.BLACK;
+        newGameMedium.text = "New game (Medium)";
+        
+        newGameEasy = new Button(sudokuGame.xPos + Square.WIDTH*10, sudokuGame.yPos + Square.HEIGHT*3, Square.WIDTH*5, Square.HEIGHT);
+        newGameEasy.borderColor = Color.BLACK;
+        newGameEasy.text = "New game (Easy)";
 	}
     
 	/**
@@ -88,9 +106,9 @@ public class Main implements ActionListener {
         timer.start();
         
         
-        new SudokuSolver(Main.sudokuGame);
-        //SudokuGenerator gen = new SudokuGenerator();
-        //gen.generatePuzzle(Difficulty.IMPOSSIBLE);
+        //new SudokuSolver(Main.sudokuGame);
+        SudokuGenerator gen = new SudokuGenerator();
+        gen.generatePuzzle(Difficulty.IMPOSSIBLE);
         
     }
 
@@ -128,7 +146,10 @@ public class Main implements ActionListener {
             numberButton.draw(g);
         }
         eraser.draw(g);
-        newGame.draw(g);
+        newGameImpossible.draw(g);
+        newGameHard.draw(g);
+        newGameMedium.draw(g);
+        newGameEasy.draw(g);
     }
 
     /**
@@ -208,9 +229,21 @@ public class Main implements ActionListener {
             }
         }
 		
-        if (newGame.contains(mouseListener.pointClicked)) {
+        if (newGameImpossible.contains(mouseListener.pointClicked)) {
             SudokuGenerator gen = new SudokuGenerator();
             gen.generatePuzzle(Difficulty.IMPOSSIBLE);
+        }
+        if (newGameHard.contains(mouseListener.pointClicked)) {
+            SudokuGenerator gen = new SudokuGenerator();
+            gen.generatePuzzle(Difficulty.HARD);
+        }
+        if (newGameMedium.contains(mouseListener.pointClicked)) {
+            SudokuGenerator gen = new SudokuGenerator();
+            gen.generatePuzzle(Difficulty.MEDIUM);
+        }
+        if (newGameEasy.contains(mouseListener.pointClicked)) {
+            SudokuGenerator gen = new SudokuGenerator();
+            gen.generatePuzzle(Difficulty.EASY);
         }
 	}
 
@@ -302,6 +335,7 @@ public class Main implements ActionListener {
     	Square.WIDTH = Square.HEIGHT;
     	sudokuGame.resize();
     	
+    	//System.out.println("Screen is: " + SCREEN_WIDTH/Square.WIDTH + " squares wide");
 
         eraser.setX((int) (Square.WIDTH * 3 + sudokuGame.xPos));
         eraser.setY(Square.HEIGHT * 10 + sudokuGame.yPos);
@@ -316,10 +350,25 @@ public class Main implements ActionListener {
             
         }
         
-        newGame.setX(sudokuGame.xPos + Square.WIDTH*10);
-        newGame.setY(sudokuGame.yPos);
-        newGame.setWidth(Square.WIDTH*5);
-        newGame.setHeight(Square.HEIGHT);
+        newGameImpossible.setX(sudokuGame.xPos + Square.WIDTH*10);
+        newGameImpossible.setY(sudokuGame.yPos);
+        newGameImpossible.setWidth(Square.WIDTH*10);
+        newGameImpossible.setHeight(Square.HEIGHT);
+        
+        newGameHard.setX(sudokuGame.xPos + Square.WIDTH*10);
+        newGameHard.setY(sudokuGame.yPos + Square.HEIGHT);
+        newGameHard.setWidth(Square.WIDTH*10);
+        newGameHard.setHeight(Square.HEIGHT);
+        
+        newGameMedium.setX(sudokuGame.xPos + Square.WIDTH*10);
+        newGameMedium.setY(sudokuGame.yPos + Square.HEIGHT*2);
+        newGameMedium.setWidth(Square.WIDTH*10);
+        newGameMedium.setHeight(Square.HEIGHT);
+        
+        newGameEasy.setX(sudokuGame.xPos + Square.WIDTH*10);
+        newGameEasy.setY(sudokuGame.yPos + Square.HEIGHT*3);
+        newGameEasy.setWidth(Square.WIDTH*10);
+        newGameEasy.setHeight(Square.HEIGHT);
     	
     }
 }
