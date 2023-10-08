@@ -7,7 +7,7 @@ import java.awt.event.MouseEvent;
  * MouseListener.java
  * 
  * @since Jul. 24, 2021
- * @author a.mcleod
+ * @author A. McLeod
  */
 public class MouseListener implements java.awt.event.MouseListener {
 

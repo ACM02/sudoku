@@ -6,7 +6,7 @@ import java.awt.Rectangle;
 /**
  * Component.java - A framework to build components from
  * @since Apr. 8, 2021
- * @author a.mcleod
+ * @author A. McLeod
  */
 public abstract class Component {
 

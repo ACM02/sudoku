@@ -10,7 +10,7 @@ import javax.swing.JLabel;
 /**
  * Button.java - A button component
  * @since Apr. 8, 2021
- * @author a.mcleod
+ * @author A. McLeod
  */
 public class Button extends Component {
 

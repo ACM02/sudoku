@@ -1,4 +1,3 @@
-/** required package class namespace */
 package sudokugame;
 
 import java.awt.Color;

@@ -16,9 +16,9 @@ import sudokugame.SelectionLevel;
 import sudokugame.Square;
 
 /** 
- * Sudoku.java - 
- * https://github.com/SH-GameMakersClub/Projects/tree/master/Flappy%20Bird/FlappyBirdFinal/src/flappybird
- * @author A. McLoed
+ * Main.java 
+ * 
+ * @author A. McLeod
  * @since Jul. 24, 2021 
  */
 public class Main implements ActionListener {

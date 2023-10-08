@@ -7,9 +7,9 @@ import java.awt.event.ComponentListener;
 import javax.swing.JPanel;
 
 /**
- * Where we draw stuff.
+ * Panel.java - Where the game is drawn
  * 
- *  @author Juhyung Kim
+ *  @author A. McLeod
  */
 @SuppressWarnings("serial")
 public class Panel extends JPanel implements ComponentListener {
